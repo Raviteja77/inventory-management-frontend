@@ -1,0 +1,45 @@
+<div class="registration-form">
+    <form class="registration" #form="ngForm" (ngSubmit)="onFormSubmit(form)">
+        <div class="input-field mb-3">
+            <label for="firstName" class="form-label"><strong>First Name</strong></label>
+            <input type="firstName" required class="form-control" name="firstName" id="firstName" #firstName="ngModel"
+                ngModel>
+        </div>
+        <div class="input-field mb-3">
+            <label for="lastName" class="form-label"><strong>Last Name</strong></label>
+            <input type="lastName" required class="form-control" name="lastName" id="lastName" #lastName="ngModel"
+                ngModel>
+        </div>
+        <div class="input-field mb-3">
+            <label for="email" class="form-label"><strong>Email</strong></label>
+            <input type="email" appEmailvalidator required class="form-control" name="email" id="email" #email="ngModel"
+                ngModel>
+                <div *ngIf="email?.touched">
+                    <div *ngIf="email.errors?.['required']" class="error-msg">
+                        Email is required
+                    </div>
+                    <div *ngIf="email.errors?.['invalidEmail'] && !email.errors?.['required']"
+                        class="error-msg">
+                        Email is invalid
+                    </div>
+                </div>
+        </div>
+        <div class="input-field mb-3">
+            <div class="position-relative">
+                <label for="password" class="form-label"><strong>Password</strong></label>
+                <input type="password" required name="password" id="password" class="form-control" #password="ngModel"
+                    ngModel>
+                <span appToggle #visible="toggle">
+                    <fa-icon class="icon" id="eye" [icon]="faEye" *ngIf="!visible.isVisible"></fa-icon>
+                    <fa-icon class="icon" id="eyeSlash" [icon]="faEyeSlash" *ngIf="visible.isVisible"></fa-icon>
+                </span>
+            </div>
+        </div>
+        <div class="registration__button text-center">
+            <button type="submit" class="btn btn-outline-primary">Register</button>
+        </div>
+        <div class="registration__note text-center">If you already have an account you can 
+            <a routerLink="/login">Login here</a>
+        </div>
+    </form>
+</div>
