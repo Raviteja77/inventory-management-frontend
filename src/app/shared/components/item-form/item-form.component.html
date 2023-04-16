@@ -1,0 +1,95 @@
+<form *ngIf="!isLoading" class="items-form" [formGroup]="item" (ngSubmit)="submitForm()">
+    <div class="row m-2">
+        <div class="col-4">
+            <label for="item-name" class="form-label"><strong>Item Name</strong></label>
+            <input type="text" class="form-control" formControlName="itemName" id="itemName"
+                [value]="form['itemName'].value">
+            <div *ngIf="form['itemName'].touched">
+                <div class="error-msg" *ngIf="form['itemName']!.hasError('required')">
+                    Item Name is required
+                </div>
+            </div>
+        </div>
+        <div class="col-4 form-group">
+            <label for="vendor-select">Vendor:</label>
+            <select id="vendor-select" formControlName="vendorId" class="form-control">
+                <option [selected]="form['vendorId'].value != null" [value]="form['vendorId'].value">{{searchForVendor(form['vendorId'].value)}}</option>
+                <option value="" disabled selected>Select a vendor</option>
+                <option *ngFor="let v of vendorStateManagement.vendors" value="{{v.vendorId}}">{{v.firstName}}</option>
+            </select>
+        </div>
+        <div class="col-4 text-end">
+            <app-button [buttonText]="(this.editItem != null)? buttonText.UPDATE_ITEM: buttonText.CREATE_ITEM" [buttonType]="buttonText.SUBMIT_TYPE" [buttonClass]="'btn btn-outline-primary mt-4'"></app-button>
+        </div>
+    </div>
+    <div class="items-form__decription">
+        <label for="description" class="form-label"><strong>Description</strong></label>
+        <textarea class="description__text" formControlName="description" cols="160" rows="7"
+            [value]="form['description'].value"></textarea>
+        <div *ngIf="form['description'].touched">
+            <div class="error-msg" *ngIf="form['description']!.hasError('required')">
+                Description is required
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <label for="purchase-price" class="form-label"><strong>Purchase Price</strong></label>
+                <input type="number" step="0.1" class="form-control" formControlName="purchasePrice" id="purchasePrice"
+                    [value]="form['purchasePrice'].value">
+                <div *ngIf="form['purchasePrice'].touched">
+                    <div class="error-msg" *ngIf="form['purchasePrice']!.hasError('required')">
+                        Purchase price is required
+                    </div>
+                </div>
+                <label for="sales-price" class="form-label"><strong>Sales Price</strong></label>
+                <input type="number" step="0.1" class="form-control" formControlName="salesPrice" id="salesPrice"
+                    [value]="form['salesPrice'].value">
+                <div *ngIf="form['salesPrice'].touched">
+                    <div class="error-msg" *ngIf="form['salesPrice']!.hasError('required')">
+                        Sales price is required
+                    </div>
+                </div>
+                <label for="itemThreshold" class="form-label"><strong>Item Threshold</strong></label>
+                <input type="number" class="form-control" formControlName="itemThreshold" id="itemThreshold"
+                    [value]="form['itemThreshold'].value">
+                <div *ngIf="form['itemThreshold'].touched">
+                    <div class="error-msg" *ngIf="form['itemThreshold']!.hasError('required')">
+                        Item Threshold is required
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <label for="expiration-date" class="form-label"><strong>Expiration Date</strong></label>
+                <input type="date" class="form-control" formControlName="expirationDate" id="expirationDate"
+                    [value]="form['expirationDate'].value">
+                <div *ngIf="form['expirationDate'].touched">
+                    <div class="error-msg" *ngIf="form['expirationDate']!.hasError('required')">
+                        Expiration Date is required
+                    </div>
+                </div>
+                <label for="availbale-quantity" class="form-label"><strong>Available Quantity</strong></label>
+                <input type="number" class="form-control" formControlName="quantity" id="quantity"
+                    [value]="form['quantity'].value">
+                <div *ngIf="form['quantity'].touched">
+                    <div class="error-msg" *ngIf="form['quantity']!.hasError('required')">
+                        Available Quantity is required
+                    </div>
+                </div>
+                <label for="sold-quantity" class="form-label"><strong>Sold Quantity</strong></label>
+                <input type="number" class="form-control" formControlName="soldQuantity" id="soldQuantity"
+                    [value]="form['soldQuantity'].value">
+                <div *ngIf="form['soldQuantity'].touched">
+                    <div class="error-msg" *ngIf="form['soldQuantity']!.hasError('required')">
+                        Item Threshold is required
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<div *ngIf="isLoading" class="d-flex justify-content-center">
+    <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+</div>

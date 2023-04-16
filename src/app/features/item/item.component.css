@@ -1,0 +1,25 @@
+.item_info {
+    border: 2px solid #95CEE8;
+    margin: 1rem;
+    padding: 1rem;
+}
+
+.item-details {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.item-detail {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.item-detail strong {
+    font-weight: bold;
+}
+
+.item-detail .item-value {
+    font-style: italic;
+}

@@ -1,0 +1,13 @@
+<div class="info">
+    <h1>Your list is empty</h1>
+    <p>Please use the 
+        <strong>
+            <ng-template [ngIf]="vendorStateManagement.vendors != null && vendorStateManagement.vendors.length != 0">
+                'Add new item'
+            </ng-template>
+            <ng-template [ngIf]="vendorStateManagement.vendors == null || vendorStateManagement.vendors.length == 0">
+                'Create new vendor'
+            </ng-template>
+        </strong> button to add your first item</p>
+    <ng-content></ng-content>    
+</div>

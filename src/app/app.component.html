@@ -1,5 +1,16 @@
-<!-- <app-login></app-login> -->
 
-<div class="content">
+<app-header>
+  <div class="d-flex" *ngIf="isAuthorized">
+      <strong class="username">{{ userName }}</strong>
+      <div>
+          <app-button [buttonClass]="'btn btn-outline-danger'"
+              [buttonText]="buttonText.LOGOUT"
+              (emitButtonClick)="logoutUser()">
+          </app-button>
+      </div>
+  </div>
+</app-header>
+
+<div class="content w-100">
   <router-outlet></router-outlet>
 </div>

@@ -13,7 +13,7 @@ import { AuthService } from '../services/auth/auth.service';
   providedIn: 'root',
 })
 export class NonAuthorizedGuard implements CanActivate {
-  constructor(private router: Router, private authFacade: AuthService) {}
+  constructor(private router: Router, private auth_service: AuthService) {}
 
   canActivate(
     route: ActivatedRouteSnapshot,
@@ -23,13 +23,14 @@ export class NonAuthorizedGuard implements CanActivate {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    this.authFacade.isAuthorized$.subscribe((data) => {
-      if (data) {
-        this.router.navigate(['/courses']);
-        return false;
-      }
+      this.auth_service.isUserChanged$.subscribe(_ => {
+        const userState = this.auth_service.getStoredUserStateManagement();
+        if (userState.token) {
+          this.router.navigate(['/items']);
+          return false;
+        }
+        return true;
+      });
       return true;
-    });
-    return true;
   }
 }

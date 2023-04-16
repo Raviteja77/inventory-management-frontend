@@ -1,0 +1,11 @@
+.item {
+    border: 2px solid #A6E895;
+    margin: 1rem;
+    padding: 1rem;
+    border-radius: 10px;
+}
+.vendors {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}

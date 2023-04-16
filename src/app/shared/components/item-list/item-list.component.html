@@ -1,0 +1,32 @@
+<div class="items">
+    <div class="row m-2">
+        <div class="col-8">
+            <app-search (emitEvent)="searchWord($event)"></app-search>
+
+        </div>
+        <div class="col-4 text-end">
+            <app-button routerLink="add" [buttonClass]="'btn btn-outline-primary'"
+                        [buttonText]="buttonText.NEWITEM"
+                        ></app-button>
+        </div>
+    </div>
+    <div class="items__search">
+    </div>
+    <ng-container *ngFor="let item of itemList | searchFilter: searchKey">
+        <div *ngIf="item.status" class="items_list">
+            <app-item-card [item]="item">
+                <div class="items_list_buttons">
+                    <app-button routerLink="{{item.itemId}}" [buttonClass]="'btn btn-outline-primary'"
+                        [buttonText]="buttonText.SHOWITEM">
+                    </app-button>
+                    <app-button routerLink="edit/{{item.itemId}}" [buttonClass]="'btn btn-outline-info'"
+                        [iconName]="penIcon">
+                    </app-button>
+                    <app-button (emitButtonClick)="saveDeleteItemId(item.itemId)" [buttonClass]="'btn btn-outline-danger'"
+                        [iconName]="trashIcon">
+                    </app-button>
+                </div>
+            </app-item-card>
+        </div>
+    </ng-container>
+</div>

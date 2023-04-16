@@ -2,16 +2,33 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { BehaviorSubject } from 'rxjs';
+import { Router } from '@angular/router';
+import { User } from 'src/app/models/User';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  private isAuthorized$$ = new BehaviorSubject<any>('');
-  public isAuthorized$ = this.isAuthorized$$.asObservable();
+  userStateManagement: User = {
+    token: '',
+    isAuthorized: false,
+    errorMessage: ''
+  }
 
-  constructor(private http: HttpClient) { }
+  private isUserChanged$$ = new BehaviorSubject<boolean>(false);
+  public isUserChanged$ = this.isUserChanged$$.asObservable();
+
+  constructor(private http: HttpClient, private router: Router) { }
+
+  setUserStateManagement() {
+    sessionStorage.setItem('userStateManagement', JSON.stringify(this.userStateManagement));
+  }
+
+  getStoredUserStateManagement() {
+    const storedList = sessionStorage.getItem('userStateManagement');
+    return storedList ? JSON.parse(storedList) : [];
+  }
 
   register(postRegisterDetails: any) {
     return this.http.post(environment.endpoints.register, {
@@ -21,8 +38,14 @@ export class AuthService {
       password: postRegisterDetails.password,
       status: true,
     }).subscribe({
-      next: (response) =>
-        console.log(response),
+      next: (response: any) => {
+        console.log(response)
+        if(response === 208) {
+          alert("The entered email is already registered")
+        } else if(response == 201) {
+          this.router.navigate(['/login']);
+        }
+      },
       error: (e) => console.error(e)
     });
   }
@@ -33,16 +56,35 @@ export class AuthService {
       password: postLoginDetails.password,
     }).subscribe({
       next: (response: any) => {
-        this.isAuthorized$$.next(response.token.isNotEmpty)
-        console.log(response)
+        this.userStateManagement.token = response.token;
+        this.userStateManagement.isAuthorized = true;
+        this.userStateManagement.errorMessage = '';
+        this.setUserStateManagement();
+        this.isUserChanged$$.next(true);
+        console.log(response.token);
       },
-      error: (e) => console.error(e)
+      error: (e) => {
+        this.userStateManagement.token = '';
+        this.userStateManagement.isAuthorized = false;
+        this.userStateManagement.errorMessage = 'Error in logging the user';
+        this.setUserStateManagement();
+        this.isUserChanged$$.next(true);
+      }
     });
   }
 
   logout(authorizationToken: string) {
-    return this.http.delete(environment.endpoints.logout, {
+    return this.http.post(environment.endpoints.logout, {
       headers: { Authorization: authorizationToken },
+    }).subscribe({
+      next: (response: any) => {
+        this.userStateManagement.token = '';
+        this.userStateManagement.isAuthorized = false;
+        this.userStateManagement.errorMessage = '';
+        sessionStorage.clear();
+        this.isUserChanged$$.next(true);
+      },
+      error: (e) => console.log(e)
     });
   }
 }

@@ -1,0 +1,50 @@
+<div class="row w-100">
+    <div class="col-md-6 p-4">
+        <h2>Request List</h2>
+        <table *ngIf="requestStateManagement?.request?.length" class="table">
+            <thead>
+                <tr>
+                    <th>Date of Request</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let request of requestStateManagement.request">
+                    <ng-template [ngIf]="request.status">
+                        <td>{{request.dateOfRequest}}</td>
+                        <td>{{request.items[0].name}}</td>
+                        <td>{{searchForVendor(request.vendorId)}}</td>
+                        <td>
+                            <button class="btn btn-primary btn-sm me-2"
+                                (click)="onEditRequest(request.requestId)">Edit</button>
+                            <button class="btn btn-danger btn-sm"
+                                (click)="onDeleteRequest(request.requestId)">Delete</button>
+                        </td>
+                    </ng-template>
+                </tr>
+            </tbody>
+        </table>
+        <div *ngIf="!requestStateManagement?.request?.length">
+            <p class="text-center">No Requests are added yet.</p>
+        </div>
+    </div>
+    <div class="col-md-6 p-4">
+        <h2>Add Request</h2>
+        <form (ngSubmit)="onAddRequest()" [formGroup]="newRequest">
+            <div class="form-group">
+                <label for="vendor-select">Vendor:</label>
+                <select id="vendor-select" formControlName="vendor" class="form-control">
+                    <option value="" disabled selected>Select a vendor</option>
+                    <option *ngFor="let v of vendorStateManagement.vendors" value="{{v.vendorId}}">{{v.firstName}}</option>
+                </select>
+            </div>
+            <ng-multiselect-dropdown [settings]="dropdownSettings" [(ngModel)]="selectedItems" [data]="inventoryStateManagement.items"
+            [ngModelOptions]="{standalone: true}" (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)">
+            </ng-multiselect-dropdown>
+            <button *ngIf="!requestId" type="submit" class="btn btn-primary text-center">Add Request</button>
+            <button *ngIf="requestId" type="submit" class="btn btn-secondary text-center">Update Request</button>
+        </form>
+    </div>
+</div>

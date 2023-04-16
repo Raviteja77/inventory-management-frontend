@@ -1,0 +1,56 @@
+<div class="row w-100">
+  <div class="col-md-6 p-4">
+    <h2>Vendor List</h2>
+    <table *ngIf="(vendorStateManagement.vendors | activeVendors)" class="table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let vendor of vendorStateManagement.vendors">
+          <ng-template [ngIf]="vendor.status">
+            <td>{{vendor.firstName}} {{vendor.lastName}}</td>
+            <td>{{vendor.email}}</td>
+            <td>
+              <button class="btn btn-primary btn-sm me-2" (click)="onEditVendor(vendor.vendorId)">Edit</button>
+              <button class="btn btn-danger btn-sm" (click)="onDeleteVendor(vendor.vendorId)">Delete</button>
+            </td>
+          </ng-template>
+        </tr>
+      </tbody>
+    </table>
+    <div *ngIf="!(vendorStateManagement.vendors | activeVendors)">
+      <p class="text-center">No Vendors are added yet.</p>
+    </div>
+  </div>
+  <div class="col-md-6 p-4">
+    <h2>Add Vendor</h2>
+    <form (ngSubmit)="onAddVendor()" [formGroup]="newVendor">
+      <div class="form-group">
+        <label for="firstName">First Name</label>
+        <input type="text" class="form-control" id="firstName" name="firstName" formControlName="firstName"
+          [value]="form['firstName'].value" required>
+      </div>
+      <div class="form-group">
+        <label for="lastName">Last Name</label>
+        <input type="text" class="form-control" id="lastName" name="lastName" formControlName="lastName"
+          [value]="form['lastName'].value" required>
+      </div>
+      <div class="form-group">
+        <label for="vendorMobile">Mobile</label>
+        <input type="text" class="form-control" id="vendorMobile" name="vendorMobile" formControlName="mobile"
+          [value]="form['mobile'].value" required>
+      </div>
+      <div class="form-group">
+        <label for="vendorEmail">Email</label>
+        <input type="email" class="form-control" id="vendorEmail" name="vendorEmail" formControlName="email"
+          [value]="form['email'].value" required>
+      </div>
+      <button *ngIf="!vendorId" type="submit" class="btn btn-primary text-center">Add Vendor</button>
+      <button *ngIf="vendorId" type="submit" class="btn btn-secondary text-center">Update Vendor</button>
+    </form>
+  </div>
+</div>
