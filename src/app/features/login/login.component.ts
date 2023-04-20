@@ -21,7 +21,11 @@ export class LoginComponent {
   constructor(private auth_Service: AuthService) { }
 
   onFormSubmit(form: NgForm): void {
-    this.auth_Service.login(form.form.value);
+    if(form.form.value.email != '' && form.form.value.password != '') {
+      this.auth_Service.login(form.form.value);
+    } else {
+      alert("Please enter all required details");
+    } 
   }
 
 }

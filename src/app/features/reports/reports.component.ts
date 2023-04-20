@@ -16,7 +16,9 @@ export class ReportsComponent implements OnInit{
   itemStateManagement!: Inventory;
 
   constructor(private vendors_service: VendorsService,
-    private items_service: ItemsService) { }
+    private items_service: ItemsService) {
+      this.vendors_service.triggerGetAllVendorsOnInitialLoad();
+    }
 
   ngOnInit(): void {
     this.vendors_service.isVendorStateChanged$.subscribe(_ => {

@@ -23,7 +23,11 @@ export class RegistrationComponent {
   constructor(private auth_Service: AuthService) { }
 
   onFormSubmit(form: NgForm): void {
-    this.auth_Service.register(form.form.value);
+    if(form.form.value.firstName != '' && form.form.value.lastName != '' && form.form.value.email != '' && form.form.value.password != '') {
+      this.auth_Service.register(form.form.value);
+    } else {
+      alert("Please enter all the required fields");
+    }
   }
 
 }

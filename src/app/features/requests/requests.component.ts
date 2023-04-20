@@ -46,7 +46,7 @@ export class RequestsComponent implements OnInit {
       vendor: this.formBuilder.control('', [Validators.required]),
       requestId: this.formBuilder.control(''),
     });
-
+    this.vendors_service.triggerGetAllVendorsOnInitialLoad();
     this.requests_service.triggerGetAllRequestsOnInitialLoad();
   }
 
@@ -57,7 +57,6 @@ export class RequestsComponent implements OnInit {
     this.items_service.isStateChanged$.subscribe(_ => {
       this.inventoryStateManagement = this.items_service.getStoredInventoryStateManagement();
     })
-    this.vendors_service.triggerGetAllVendorsOnInitialLoad();
     this.vendors_service.isVendorStateChanged$.subscribe(_ => {
       this.vendorStateManagement = this.vendors_service.getStoredVendorStateManagement();
     })

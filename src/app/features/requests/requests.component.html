@@ -37,7 +37,9 @@
                 <label for="vendor-select">Vendor:</label>
                 <select id="vendor-select" formControlName="vendor" class="form-control">
                     <option value="" disabled selected>Select a vendor</option>
-                    <option *ngFor="let v of vendorStateManagement.vendors" value="{{v.vendorId}}">{{v.firstName}}</option>
+                    <ng-container *ngFor="let v of vendorStateManagement.vendors">
+                        <option *ngIf="v.status" value="{{v.vendorId}}">{{v.firstName}}</option>
+                    </ng-container>
                 </select>
             </div>
             <ng-multiselect-dropdown [settings]="dropdownSettings" [(ngModel)]="selectedItems" [data]="inventoryStateManagement.items"

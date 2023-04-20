@@ -15,7 +15,9 @@
             <select id="vendor-select" formControlName="vendorId" class="form-control">
                 <option [selected]="form['vendorId'].value != null" [value]="form['vendorId'].value">{{searchForVendor(form['vendorId'].value)}}</option>
                 <option value="" disabled selected>Select a vendor</option>
-                <option *ngFor="let v of vendorStateManagement.vendors" value="{{v.vendorId}}">{{v.firstName}}</option>
+                <ng-container *ngFor="let v of vendorStateManagement.vendors">
+                    <option *ngIf="v.status" value="{{v.vendorId}}">{{v.firstName}}</option>
+                </ng-container>
             </select>
         </div>
         <div class="col-4 text-end">
